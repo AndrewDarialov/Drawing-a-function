@@ -1,0 +1,60 @@
+
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
+
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+
+public class Main extends Application {
+    Stage window;
+
+    @Override
+    public void start(Stage primaryStage) throws NoSuchMethodError {
+        primaryStage.setTitle("Graphing Functions");
+        Group root = new Group();
+        Scene scene = new Scene(root, 1200, 600, Color.PINK);
+        for (int i = 0; i < 1201; i++) {
+            Text x = new Text(i, 300, "-");
+            root.getChildren().add(x);
+            Text y = new Text(600, i, "|");
+            root.getChildren().add(y);
+
+        }
+        TextField function = new TextField();
+        function.setPromptText("Enter the function ");
+        Button zoom = new Button("Zoom");
+        Button graph = new Button("Graph");
+        graph.setLayoutX(10);
+        graph.setLayoutY(30);
+        zoom.setLayoutY(5);
+        zoom.setLayoutX(1150);
+        root.getChildren().add(zoom);
+        root.getChildren().add(function);
+        root.getChildren().add(graph);
+        graph.setOnAction(e -> Make(function.getText(), root));
+        primaryStage.setScene(scene);
+        primaryStage.show();
+
+    }
+
+    private void Make(String s, Group root) throws ScriptException {
+        ScriptEngineManager manager = new ScriptEngineManager();
+        ScriptEngine engine = manager.getEngineByName("js");
+        engine.eval(s);
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+}
